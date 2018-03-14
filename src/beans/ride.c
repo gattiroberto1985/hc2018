@@ -1,4 +1,4 @@
-#include "../../inc/beans/ride.h"
+#include "ride.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

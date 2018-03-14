@@ -1,7 +1,7 @@
 #ifndef RIDE
 #define RIDE
 
-#include "../utilities.h"
+#include "../utils/utilities.h"
 #include "position.h"
 
 typedef struct _Ride {

@@ -1,7 +1,7 @@
 #ifndef POSITION
 #define POSITION
 
-#include "../utilities.h"
+#include "../utils/utilities.h"
 
 typedef struct _Position {
     long x;

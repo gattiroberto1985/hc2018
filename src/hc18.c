@@ -1,27 +1,47 @@
-#include "../inc/beans/position.h"
-#include "../inc/utilities.h"
+#include "beans/position.h"
+#include "beans/ride.h"
+#include "beans/car.h"
+#include "beans/game.h"
+#include "utils/utilities.h"
+#include "alg/planning.h"
+#include "io/input.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+void _DEBUG_print_list(Node* head) {
+    printf(" [ main ] [ DEBUG ] Listing rides . . . \n");
+    int i = 0;
+    Node* node = head;
+    while ( node  && node != NULL ) {
+        printf(" [ main ] [ DEBUG ] El. %i is: ", i);
+        node_toString(node);
+        //printf(" [ main ] [ DEBUG ] node->next . . .\n");
+        node = node->next;
+        //printf( " [ main ] [ DEBUG ] i++ . . .\n");
+        i++;
+    }
+}
+
 
 int main(int argc, char const *argv[]) {
 
-    println (" [ main ] creating position . . .");
-    Position* pp = position_new( );
-    println ( position_toString( pp ) );
-    println (" [ main ] Setting new value for coordinates . . .");
-    position_setX(pp, 19);
-    position_setY(pp, 21);
-    println ( position_toString( pp ) );
-    println ( " [ main ] Destroying position . . .");
-    position_destroy( pp );
+    //Let's start!
+    // Defining some stuff . . .
+    GameData* gameData = NULL;
+    Node* ridesList = node_createList(0);
+    // reading input file . . .
+    char* iFile = "/cygdrive/c/Users/roberto.gatti/TEMP/HASHCODE_2018/my/input/a_example.in";//argv[0];
+    // Reading input file, filling the ride list and the game data
+    printf(" [ main ] About to read input file . . .\n");
+    manage_input_file(iFile, ridesList, gameData);
 
-    /*println ( " [ main ] Testing 2 param constructor . . .");
-    pp = position_new( 13, 22);
-    println ( "%s", position_toString( pp ) );
+    // // Debugging list . . .
+    //_DEBUG_print_list(ridesList);
 
-    position_destroy( pp );*/
+    // Planning rides and generating output file
+    //plan_rides(ridesList, gameData, oFile);
+    //plan_ride_with_clone(ridesList, gameData, oFile);
 
     return 0;
 }

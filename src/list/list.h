@@ -5,7 +5,7 @@
 
 typedef struct _Node {
     struct Node* next;
-    Ride ride;
+    Ride* ride;
 } Node;
 
 /*
@@ -22,15 +22,17 @@ typedef struct _Node {
         type name1 = _a, name2 = _b;
 */
 Node* node_createList(int listSize);
-void node_destroyList(Node* head);
-Node* node_new( Ride* pr );
+void  node_destroyList(Node* head);
+Node* node_new(Ride* pr );
 void  node_destroy(Node* n);
 Node* node_createList(int length);
 Node* node_addElementToPos(Node* head, Ride* pr, int pos);
+Node* node_addElementTail(Node* head, Ride* pr);
 void  node_setElementInPos(Node* head, Ride* pr, int pos);
 Ride* node_getElementAtPos(Node* head, int pos);
 Ride* node_deleteElementByObj(Ride* pr);
 Ride* node_deleteElementByPos(int ep);
 int   node_listLength(Node* head);
+void  node_toString(Node* node);
 
 #endif

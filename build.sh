@@ -9,5 +9,5 @@ done
 
 mkdir -p obj bin
 echo "Compiling files: $files . . ."
-echo " ----> gcc $files -o $ofile <----"
-gcc $files -o $ofile
+echo " ----> gcc -g $files -o $ofile <----"
+gcc -g $files -o $ofile

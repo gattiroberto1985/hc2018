@@ -1,7 +1,8 @@
-#include "../../inc/list/list.h"
-#include "../../inc/beans/position.h" // for emergency matter!
+#include "list.h"
+//#include "../../inc/beans/position.h" // for emergency matter!
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 Node* node_new(Ride* pRide ) {
     Node* node = malloc( sizeof( Node ) );
@@ -9,17 +10,17 @@ Node* node_new(Ride* pRide ) {
         //TODO: manage NULL!
     }
     node->next = NULL;
-    node->ride = *( ride_new() );
+    node->ride = ride_new();
     return node;
 }
 
 void node_destroy(Node* n) {
 
     while( n != NULL ) {
-        printf(" [ node_destroy ] Request for node destroying @ %p\n", n);
-        printf( " [ node_destroy ] Destroying node->ride . . .\n");
-        ride_destroy( &( n->ride ) );
-        printf( " [ node_destroy ] Destroying node . . .\n");
+        //printf(" [ node_destroy ] Request for node destroying @ %p\n", n);
+        //printf( " [ node_destroy ] Destroying node->ride . . .\n");
+        ride_destroy(n->ride);
+        //printf( " [ node_destroy ] Destroying node . . .\n");
         free( n );
         n = NULL;
     }
@@ -51,7 +52,7 @@ Node* node_addElementToPos(Node* head, Ride* pRide, int pos) {
     }
 
     if ( pos > node_listLength(head) ) {
-        // pos greater than listlengh: adding over the last element! Whoaaa!
+        // pos greater than listlengh + 1: adding well over the last element! Whoaaa!
         return NULL;
     }
 
@@ -72,17 +73,20 @@ Node* node_addElementToPos(Node* head, Ride* pRide, int pos) {
     return newNode;          // returning the new node
 }
 
+Node* node_addElementTail(Node* head, Ride* pRide) {
+    node_addElementToPos(head, pRide, node_listLength(head));
+}
 
 void node_setElementInPos(Node* head, Ride* pRide, int pos) {
     if ( head == NULL ) {
         //TODO: boh
         printf ( " [ node_setElementInPos ] HEAD IS NULL!\n");
     }
-    println( " [ node_setElementInPos ] Printing element . . .");
+    //println( " [ node_setElementInPos ] Printing element . . .");
     printf(" [ node_setElementInPos ] pRide is: %p, while its size is %i\n", pRide, sizeof(pRide) );
     //ride_toString( pRide );
-    printf( " [ node_setElementInPos ]  pRide contains ");
-    ride_toString( pRide );
+    //printf( " [ node_setElementInPos ]  pRide contains ");
+    //ride_toString( pRide );
     if ( pos > node_listLength(head) ) {
         // pos greater than listlengh: adding over the last element! Whoaaa!
         return;
@@ -95,7 +99,7 @@ void node_setElementInPos(Node* head, Ride* pRide, int pos) {
         n = ( Node* ) n->next;
     }
     printf(" [ node_setElementInPos ] Adding ride at position %i . . .\n", cnt);
-    n->ride = *pRide;
+    n->ride = pRide;
 }
 
 Ride* node_getElementAtPos(Node* head, int pos) {
@@ -109,7 +113,7 @@ Ride* node_getElementAtPos(Node* head, int pos) {
         n = ( Node* ) n->next;
         curPos++;
     }
-    return & ( n->ride );
+    return n->ride;
 }
 
 
@@ -131,4 +135,10 @@ int node_listLength(Node* head) {
     }
 
     return size;
+}
+
+void node_toString(Node* n) {
+    printf(
+        "{ addr: %p, ride: { id: %i, tStart: %i, tEnd: %i, start: { x: %i, y: %i }, end: { x: %i, y: %i } } }\n",
+        n, n->ride->id, n->ride->startTime, n->ride->finalTime, n->ride->start->x, n->ride->start->y, n->ride->end->x, n->ride->end->y);
 }

@@ -1,5 +1,5 @@
-#include "../../inc/beans/position.h"
-#include "../../inc/utilities.h"
+#include "position.h"
+#include "../utils/utilities.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
