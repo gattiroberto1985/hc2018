@@ -1,3 +1,30 @@
+/**
+ * Planning algorythm ride-based. For every car we check if a ride which certain
+ * conditions exists, and in such case we "run" this ride.
+ *
+ * The fitting conditions are:
+ *
+ *  - starting the ride within a certain "margin". By "margin" we mean this
+ *    quantity:
+ *
+ *         start time of the ride - ( time for the car to get to ride initial position + current time )
+ *
+ *    If the margin is positive, then the ride will start on time but after a
+ *    "pause period" of the car in the starting position. Here, the car is
+ *    waiting the correct start time, as a ride CANNOT start before that moment.
+ *    Otherwise, it represents a delay of the start time of the ride. In this
+ *    case, the bonus points have gone. Pity!
+ *
+ *  - finishing the ride before the end of simulation, i. e.:
+ *
+ *         currentTime +
+ *         time for the car to get to the ride initial position +
+ *         time for the ride to be run +
+ *         margin (only if positive as in this case it's time spent by the car waiting)
+ *
+ *    must be smaller than the total simulation time.
+ *
+ */
 #ifndef PLANNING_C
 #define PLANNING_C
 
@@ -11,16 +38,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-/*
-- pianificazione corse:
-*
-*      per ogni macchina cerco la corsa con minimizzazione tra:
-*        - distanza macchina - p_start_corsa (abs( p_in_corsa - p_in_macchina)) < parametro_interno_o_specificato
-*        - t_start_corsa e valore di cui sopra ( deve essere > 0 )
-*
-*      se la corsa esiste, la assegno e procedo ad una nuova ricerca per la
-*      stessa macchina, con nuove posizioni e tutto.
-*/
 
 void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
     printf(" [ plan_rides ] Planning rides . . .\n");
