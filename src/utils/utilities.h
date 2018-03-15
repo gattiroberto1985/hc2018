@@ -1,5 +1,5 @@
-#ifndef UTILITIES
-#define UTILITIES
+#ifndef UTILITIES_H
+#define UTILITIES_H
 
 
 #define FALSE 1
@@ -9,17 +9,6 @@
 
 // Defining boolean type (as alias of int :) )
 typedef int bool;
-
-
-// Defining structure for GameData object
-typedef struct GameData {
-    int rows;
-    int columns;
-    int vehicleNum;
-    int rideNum;
-    int bonusForOnTimeLeave;
-    int maxSimulationTime;
-} gamedata_t;
 
 // Function to print and make new line
 void println(char* str);

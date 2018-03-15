@@ -1,3 +1,6 @@
+#ifndef LIST_C
+#define LIST_C
+
 #include "list.h"
 //#include "../../inc/beans/position.h" // for emergency matter!
 #include <stdlib.h>
@@ -142,3 +145,5 @@ void node_toString(Node* n) {
         "{ addr: %p, ride: { id: %i, tStart: %i, tEnd: %i, start: { x: %i, y: %i }, end: { x: %i, y: %i } } }\n",
         n, n->ride->id, n->ride->startTime, n->ride->finalTime, n->ride->start->x, n->ride->start->y, n->ride->end->x, n->ride->end->y);
 }
+
+#endif

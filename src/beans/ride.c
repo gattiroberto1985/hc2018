@@ -1,3 +1,6 @@
+#ifndef RIDE_C
+#define RIDE_C
+#include "../utils/utilities.h"
 #include "ride.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,6 +19,7 @@ Ride* ride_new( ) {
     ride_setFinalTime(pr, 0L);
     ride_setId(pr, 0);
     ride_setHasRun(pr, FALSE);
+    //printf(" -----> Ride has run: %i\n", pr->hasRun);
     return pr;
 }
 
@@ -58,9 +62,10 @@ void ride_setId(Ride* r, int id) {
     r->id = id;
 }
 
-long ride_getMargin(Ride* r) {
-    return -1;
-}
+/*long ride_getMargin(Ride* r) {
+    return
+        ride_calculateDistance(r)
+}*/
 
 long ride_calculateDistance( Ride* r ) {
     return position_getDistanceBetween( r->start, r->end );
@@ -68,7 +73,7 @@ long ride_calculateDistance( Ride* r ) {
 
 void ride_toString(Ride* r) {
     //sprintf(rs, "{ id: %i, start: %s, end: %s, tStart: %i, tEnd: %i }", r->id, position_toString( &( r->start) ), position_toString( &( r->end) ), r->startTime, r->finalTime);
-    printf( "Ride ---> { id: %i, tStart: %i, tEnd: %i, start: { x: %i, y: %i }, end: { x: %i, y: %i } }\n", r->id, r->startTime, r->finalTime, r->start->x, r->start->y, r->end->x, r->end->y);
+    printf( "Ride ---> { id: %i, tStart: %i, tEnd: %i, start: { x: %i, y: %i }, end: { x: %i, y: %i } }", r->id, r->startTime, r->finalTime, r->start->x, r->start->y, r->end->x, r->end->y);
     //printf(" [ ride_toString ] Printing positions: \n");
     //printf(" [ ride_toString ] r->start: %p\n", r->start);
     //printf(" [ ride_toString ] r->start: %p\n", & ( r->start) );
@@ -79,3 +84,5 @@ void ride_toString(Ride* r) {
     //printf( " [ ride_toString ] Start: %s\n", position_toString( &( r->start) ));
     //printf( " [ ride_toString ] End  : %s\n", position_toString( &( r->end) ));
 }
+
+#endif

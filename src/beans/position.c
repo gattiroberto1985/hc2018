@@ -1,3 +1,6 @@
+#ifndef POSITION_C
+#define POSITION_C
+
 #include "position.h"
 #include "../utils/utilities.h"
 #include <string.h>
@@ -57,3 +60,5 @@ char* position_toString(Position* pos) {
     sprintf( str, " { x: %i, y: %i }", pos->x, pos->y);
     return str;
 }
+
+#endif

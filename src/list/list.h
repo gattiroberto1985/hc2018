@@ -1,5 +1,5 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef LIST_H
+#define LIST_H
 
 #include "../beans/ride.h"
 

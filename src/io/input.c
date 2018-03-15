@@ -1,3 +1,6 @@
+#ifndef INPUT_C
+#define INPUT_C
+
 #include "../list/list.h"
 #include "../beans/game.h"
 #include "../beans/position.h"
@@ -15,7 +18,6 @@ void manage_input_file(const char* filePath, Node* rides, GameData* gameData) {
     size_t len = 0;
     ssize_t read;
     Node* node = rides;
-    gameData = malloc( sizeof( GameData) ) ;
     fp = fopen(filePath, "r");
     int count = 0;
     if (fp == NULL) {
@@ -69,9 +71,9 @@ void manage_input_file(const char* filePath, Node* rides, GameData* gameData) {
             //int sx = 0, sy = 0, ex = 0, ey = 0, ts = 0, te = 0;
             // Defining a new ride with the data . . .
             printf( " [ manage_input_file ] [ line no. %i ] ----> Allocating ride and positions . . . \n", count);
-            Ride*     ride  = malloc( sizeof ( Ride    ) ) ;
-            Position* start = malloc( sizeof( Position ) );
-            Position* end   = malloc( sizeof( Position ) );
+            Ride*     ride  = ride_new();     //malloc( sizeof ( Ride    ) ) ;
+            Position* start = position_new(); //malloc( sizeof( Position ) );
+            Position* end   = position_new(); //malloc( sizeof( Position ) );
             printf( " [ manage_input_file ] [ line no. %i ] ----> Setting ride start and end . . . \n", count);
             ride->id = count;
             ride->start = start;
@@ -98,3 +100,5 @@ void manage_input_file(const char* filePath, Node* rides, GameData* gameData) {
       free(line);*/
     //exit(EXIT_SUCCESS);
 }
+
+#endif

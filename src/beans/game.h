@@ -10,4 +10,6 @@ typedef struct _GameData {
     int maxSimulationTime;
 } GameData;
 
+void game_toString(GameData* gd);
+
 #endif

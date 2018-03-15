@@ -1,7 +1,7 @@
+#include "beans/game.h"
 #include "beans/position.h"
 #include "beans/ride.h"
 #include "beans/car.h"
-#include "beans/game.h"
 #include "utils/utilities.h"
 #include "alg/planning.h"
 #include "io/input.h"
@@ -28,10 +28,11 @@ int main(int argc, char const *argv[]) {
 
     //Let's start!
     // Defining some stuff . . .
-    GameData* gameData = NULL;
+    GameData* gameData = malloc( sizeof( GameData ) ) ;
     Node* ridesList = node_createList(0);
     // reading input file . . .
     char* iFile = "/cygdrive/c/Users/roberto.gatti/TEMP/HASHCODE_2018/my/input/a_example.in";//argv[0];
+    char* oFile = "/cygdrive/c/Users/roberto.gatti/TEMP/HASHCODE_2018/my/output/a_example.out";//argv[0];
     // Reading input file, filling the ride list and the game data
     printf(" [ main ] About to read input file . . .\n");
     manage_input_file(iFile, ridesList, gameData);
@@ -40,7 +41,7 @@ int main(int argc, char const *argv[]) {
     //_DEBUG_print_list(ridesList);
 
     // Planning rides and generating output file
-    //plan_rides(ridesList, gameData, oFile);
+    plan_rides(ridesList, gameData, oFile);
     //plan_ride_with_clone(ridesList, gameData, oFile);
 
     return 0;

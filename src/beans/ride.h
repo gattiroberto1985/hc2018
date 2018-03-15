@@ -22,8 +22,7 @@ void ride_setFinalTime      (Ride* r, long et);
 void ride_setHasRun         (Ride* r, bool hr);
 void ride_setId             (Ride* r, int id);
 
-long ride_getMargin         (Ride* r);
-
+//long ride_getMargin         (Ride* r);
 long ride_calculateDistance (Ride* r);
 
 void ride_toString( Ride* r);
