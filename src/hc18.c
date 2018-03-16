@@ -27,8 +27,14 @@ void _DEBUG_print_list(Node* head) {
 int main(int argc, char const *argv[]) {
 
     //Let's start!
+
+    //Reading user input
+    char* iFile          = argv[0];
+    long absMaxMarginVal = strtol(argv[1], &p, 10);
+
     // Defining some stuff . . .
     GameData* gameData = malloc( sizeof( GameData ) ) ;
+    gameData->MAX_ABS_MARGIN = absMaxMarginVal;
     Node* ridesList = node_createList(0);
     // reading input file . . .
     char* iFile = "/cygdrive/c/Users/roberto.gatti/TEMP/HASHCODE_2018/my/input/a_example.in";//argv[0];

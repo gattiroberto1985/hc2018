@@ -90,9 +90,9 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
                                 totalTime);
                 // So, let's check the conditions
                 if (
-                        margin >= 0                  && // Margin is non negative, i. e. the ride can start on time
-                        margin < bestMargin          && // Margin is a better (i. e. lower) value than the current best margin
-                        residualTime - totalTime > 0    // The ride will finish before the end of simulation
+                    abs ( margin ) <= gameData->maxAbsMargin && // Margin is non negative, i. e. the ride can start on time
+                        abs( margin ) < abs ( bestMargin )   && // Margin is a better (i. e. lower) value than the current best margin
+                        residualTime - totalTime > 0            // The ride will finish before the end of simulation
                     ) {
                     bestMargin = margin;
                     theRide = aRide;

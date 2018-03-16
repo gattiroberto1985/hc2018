@@ -7,13 +7,13 @@
 #include <stdio.h>
 #include <string.h>
 
-Node* node_new(Ride* pRide ) {
+Node* node_new(void* pRide, size_t sizeOfElement) {
     Node* node = malloc( sizeof( Node ) );
     if ( node == NULL ) {
         //TODO: manage NULL!
     }
     node->next = NULL;
-    node->ride = ride_new();
+    node->element = malloc( sizeOfElement );
     return node;
 }
 
@@ -22,7 +22,7 @@ void node_destroy(Node* n) {
     while( n != NULL ) {
         //printf(" [ node_destroy ] Request for node destroying @ %p\n", n);
         //printf( " [ node_destroy ] Destroying node->ride . . .\n");
-        ride_destroy(n->ride);
+        //ride_destroy(n->ride);
         //printf( " [ node_destroy ] Destroying node . . .\n");
         free( n );
         n = NULL;
@@ -49,7 +49,7 @@ void node_destroyList(Node* head) {
     }
 }
 
-Node* node_addElementToPos(Node* head, Ride* pRide, int pos) {
+Node* node_addElementToPos(Node* head, void* pEl, int sizeOfEl, int pos) {
     if ( head == NULL ) {
         //TODO: boh
     }
@@ -69,24 +69,24 @@ Node* node_addElementToPos(Node* head, Ride* pRide, int pos) {
 
     // n is the element before the one at the position
     Node* theNext = ( Node* ) n->next; // May be null if adding in tail
-    Node* newNode = node_new(pRide); // Defining the new node
+    Node* newNode = node_new(pEl, sizeOfEl); // Defining the new node
     // So, switching the nodes:
     n->next = newNode;       // the "next" of the previous is the new node
     newNode->next = theNext; // the "next" of the new node is the "old" next
     return newNode;          // returning the new node
 }
 
-Node* node_addElementTail(Node* head, Ride* pRide) {
-    node_addElementToPos(head, pRide, node_listLength(head));
+Node* node_addElementTail(Node* head, void* pEl, int sizeOfEl) {
+    node_addElementToPos(head, pRide, sizeOfEl, node_listLength(head));
 }
 
-void node_setElementInPos(Node* head, Ride* pRide, int pos) {
+void node_setElementInPos(Node* head, void* pEl, int pos) {
     if ( head == NULL ) {
         //TODO: boh
         printf ( " [ node_setElementInPos ] HEAD IS NULL!\n");
     }
     //println( " [ node_setElementInPos ] Printing element . . .");
-    printf(" [ node_setElementInPos ] pRide is: %p, while its size is %i\n", pRide, sizeof(pRide) );
+    printf(" [ node_setElementInPos ] pRide is: %p, while its size is %i\n", pEl, sizeof( pEl ) );
     //ride_toString( pRide );
     //printf( " [ node_setElementInPos ]  pRide contains ");
     //ride_toString( pRide );
@@ -102,7 +102,7 @@ void node_setElementInPos(Node* head, Ride* pRide, int pos) {
         n = ( Node* ) n->next;
     }
     printf(" [ node_setElementInPos ] Adding ride at position %i . . .\n", cnt);
-    n->ride = pRide;
+    n->element = pEl;
 }
 
 Ride* node_getElementAtPos(Node* head, int pos) {

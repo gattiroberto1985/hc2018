@@ -1,11 +1,11 @@
 #ifndef LIST_H
 #define LIST_H
 
-#include "../beans/ride.h"
+//#include "../beans/ride.h"
 
 typedef struct _Node {
     struct Node* next;
-    Ride* ride;
+    void* element;
 } Node;
 
 /*
@@ -23,15 +23,15 @@ typedef struct _Node {
 */
 Node* node_createList(int listSize);
 void  node_destroyList(Node* head);
-Node* node_new(Ride* pr );
+Node* node_new(void* pr, size_t sizeOfElement);
 void  node_destroy(Node* n);
 Node* node_createList(int length);
-Node* node_addElementToPos(Node* head, Ride* pr, int pos);
-Node* node_addElementTail(Node* head, Ride* pr);
-void  node_setElementInPos(Node* head, Ride* pr, int pos);
-Ride* node_getElementAtPos(Node* head, int pos);
-Ride* node_deleteElementByObj(Ride* pr);
-Ride* node_deleteElementByPos(int ep);
+Node* node_addElementToPos(Node* head, void* pr, int sizeOfEl, int pos);
+Node* node_addElementTail(Node* head, void* pr, int sizeOfEl);
+void  node_setElementInPos(Node* head, void* pr, int pos);
+void* node_getElementAtPos(Node* head, int pos);
+void* node_deleteElementByObj(void* pr);
+void* node_deleteElementByPos(int ep);
 int   node_listLength(Node* head);
 void  node_toString(Node* node);
 
