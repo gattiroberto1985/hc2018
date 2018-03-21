@@ -50,6 +50,8 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
 
     int totalRideManaged = 0;
     int totalRideOnTime = 0;
+    int totalRideClosedOnTime = 0;
+    long totalLength = 0;
 
     for ( int carNo = 1; carNo <= gameData->vehicleNum; carNo++ ) {
         // Creating car, with start position (0, 0) (default value for position)
@@ -62,6 +64,8 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
         bool finishedSimulationForCar = FALSE;
         int totalRidesOfCar = 0;
         int totalRidesLeavingOnTimeForCar = 0;
+        int totalRidesFinishingOnTimeForCar = 0;
+        long carTotalLengthWithPoints = 0;
         //printf( " [ plan_rides ] --> CAR %i is going to run rides: ", theCar->id );
         while ( finishedSimulationForCar != TRUE )
         {
@@ -140,16 +144,22 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
             totalRidesOfCar++;
             if ( bestMargin >= 0 )
                 totalRidesLeavingOnTimeForCar++;
+            if ( ( currentTime + bestRideTotalTime ) - theRide->finalTime < 0 ) {// if the ride arrive on time
+                totalRidesFinishingOnTimeForCar++;
+                carTotalLengthWithPoints += ride_calculateDistance(theRide);
+            }
             fprintf(of, "%i ", theRide->id);
         }
         //printf(" [ plan_rides ] [ car no. %i] Finished simulation for car. Destroying it . . . \n", theCar->id);
         fprintf(of, " ( total rides managed: %i)\n", totalRidesOfCar);
         car_destroy(theCar);
-        totalRideManaged += totalRidesOfCar;
-        totalRideOnTime  += totalRidesLeavingOnTimeForCar;
+        totalRideManaged      += totalRidesOfCar;
+        totalRideOnTime       += totalRidesLeavingOnTimeForCar;
+        totalRideClosedOnTime += totalRidesFinishingOnTimeForCar;
+        totalLength           += carTotalLengthWithPoints;
     }
-    printf (           "We have %i rides managed, %i of which started in time (margin >= 0)\n", totalRideManaged, totalRideOnTime);
-    fprintf(of, "\n***\nWe have %i rides managed, %i of which started in time (margin >= 0)\n", totalRideManaged, totalRideOnTime);
+    printf (           "We have %i rides managed. %i finished on time and %i started even in time (margin >= 0). The total length (with points!) is %i\n", totalRideManaged, totalRideClosedOnTime, totalRideOnTime, totalLength);
+    fprintf(of, "\n***\nWe have %i rides managed. %i finished on time and %i started even in time (margin >= 0). The total length (with points!) is %i\n", totalRideManaged, totalRideClosedOnTime, totalRideOnTime, totalLength);
     fclose(of);
 }
 
