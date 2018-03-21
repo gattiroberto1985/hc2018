@@ -38,7 +38,8 @@ int main(int argc, char const *argv[]) {
     Node* ridesList = node_createList(0);
     // reading input file . . .
     //char* iFile = "/cygdrive/c/Users/roberto.gatti/TEMP/HASHCODE_2018/my/input/a_example.in";//argv[0];
-    char* oFile = string_replace(iFile, "input", "output");//argv[0];
+    char* tmp = string_replace(iFile, "input", "output");//argv[0];
+    char* oFile = string_replace(tmp, ".in", ".out");
     // Reading input file, filling the ride list and the game data
     printf(" [ main ] About to read input file . . .\n");
     manage_input_file(iFile, ridesList, gameData);

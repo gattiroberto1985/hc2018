@@ -48,6 +48,8 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
         exit(1);
     }
 
+    int totalRideManaged = 0;
+    int totalRideOnTime = 0;
 
     for ( int carNo = 1; carNo <= gameData->vehicleNum; carNo++ ) {
         // Creating car, with start position (0, 0) (default value for position)
@@ -59,6 +61,7 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
         //long currentTime  = 0;
         bool finishedSimulationForCar = FALSE;
         int totalRidesOfCar = 0;
+        int totalRidesLeavingOnTimeForCar = 0;
         //printf( " [ plan_rides ] --> CAR %i is going to run rides: ", theCar->id );
         while ( finishedSimulationForCar != TRUE )
         {
@@ -66,6 +69,7 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
             Node* node = ridesList;
             Ride* theRide = NULL;
             long bestAbsMargin = 1E10;
+            long bestMargin = 1E10;
             long bestRideTotalTime = 1;
             long currentTime = gameData->maxSimulationTime - residualTime;
             //printf( " [ plan_rides ] [ car no. %i] Starting ride loop . . .\n", theCar->id );
@@ -106,9 +110,9 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
                         residualTime - totalTime > 0               // The ride will finish before the end of simulation
                     ) {
                     bestAbsMargin = abs ( margin );
+                    bestMargin = margin;
                     theRide = aRide;
                     bestRideTotalTime = totalTime;
-                    totalRidesOfCar++;
                 }
 
                 // then pass to the next ride
@@ -125,7 +129,7 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
 
             // ... otherwise, we have a ride fitting all of our conditions!
             // Let's run it!
-            printf(" [ plan_rides ] [ car no. %i] A ride has been found (id: %i)!\n", theCar->id, theRide->id);
+            //printf(" [ plan_rides ] [ car no. %i] A ride has been found (id: %i)!\n", theCar->id, theRide->id);
             // Updating the residual simulation time
             residualTime = residualTime - bestRideTotalTime;
             // Updating the car position
@@ -133,12 +137,19 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
             // Setting the ride as run
             //printf(" [ plan_rides ] [ car no. %i] [ ride no. %i] Setting ride as run . . .\n", theCar->id, theRide->id);
             theRide->hasRun = TRUE;
+            totalRidesOfCar++;
+            if ( bestMargin >= 0 )
+                totalRidesLeavingOnTimeForCar++;
             fprintf(of, "%i ", theRide->id);
         }
         //printf(" [ plan_rides ] [ car no. %i] Finished simulation for car. Destroying it . . . \n", theCar->id);
         fprintf(of, " ( total rides managed: %i)\n", totalRidesOfCar);
         car_destroy(theCar);
+        totalRideManaged += totalRidesOfCar;
+        totalRideOnTime  += totalRidesLeavingOnTimeForCar;
     }
+    printf (           "We have %i rides managed, %i of which started in time (margin >= 0)\n", totalRideManaged, totalRideOnTime);
+    fprintf(of, "\n***\nWe have %i rides managed, %i of which started in time (margin >= 0)\n", totalRideManaged, totalRideOnTime);
     fclose(of);
 }
 
