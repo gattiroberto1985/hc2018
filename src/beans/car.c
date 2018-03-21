@@ -2,6 +2,7 @@
 #define CAR_C
 
 #include "car.h"
+#include "position.h"
 #include "../utils/utilities.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -13,9 +14,17 @@ Car* car_new() {
         // TODO: manage NULL!
     }
     car_setId(pc, 0);
-    car_setPosition(pc, position_new());
+    pc->position = position_new();
+    //car_setPosition(pc, position_new());
     pc->ridesRun = NULL; //malloc( sizeof( long ) );
     //car_setTotalTime(pc, 0);
+}
+
+void car_destroy(Car* theCar) {
+    //printf(" [ car_destroy ] Destroying car @%p . . . \n", theCar);
+    position_destroy(theCar->position);
+    free( theCar );
+    //printf(" [ car_destroy ] Destroyed!\n");
 }
 
 void car_setId(Car* pc, int id) {

@@ -41,30 +41,40 @@
 
 void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
     printf(" [ plan_rides ] Planning rides . . .\n");
+    FILE* of = fopen(oFile, "w");
+    if ( of == NULL )
+    {
+        printf("Error opening file!\n");
+        exit(1);
+    }
+
 
     for ( int carNo = 1; carNo <= gameData->vehicleNum; carNo++ ) {
         // Creating car, with start position (0, 0) (default value for position)
+        printf(" [ plan_rides ] Analyzing car %i . . . \n", carNo);
         Car* theCar = car_new( );
         car_setId( theCar, carNo );
+        fprintf(of, "Car: %i\tRides: ", theCar->id);
         long residualTime = gameData->maxSimulationTime;
         //long currentTime  = 0;
         bool finishedSimulationForCar = FALSE;
+        int totalRidesOfCar = 0;
         //printf( " [ plan_rides ] --> CAR %i is going to run rides: ", theCar->id );
         while ( finishedSimulationForCar != TRUE )
         {
             // Looping through list searching for the best matching ride
             Node* node = ridesList;
             Ride* theRide = NULL;
-            long bestMargin = 1E10;
+            long bestAbsMargin = 1E10;
             long bestRideTotalTime = 1;
             long currentTime = gameData->maxSimulationTime - residualTime;
-            printf( " [ plan_rides ] [ car no. %i] Starting ride loop . . .\n", theCar->id );
+            //printf( " [ plan_rides ] [ car no. %i] Starting ride loop . . .\n", theCar->id );
             while ( node != NULL ) {
                 Ride* aRide = node->ride;
-                printf( " [ plan_rides ] [ car no. %i] [ ride no. %i ] Check if run . . .\n", theCar->id, aRide->id );
+                //printf( " [ plan_rides ] [ car no. %i] [ ride no. %i ] Check if run . . .\n", theCar->id, aRide->id );
                 // Skip this ride if already run
                 if ( aRide->hasRun == TRUE ) {
-                    printf( " [ plan_rides ] [ car no. %i] [ ride no. %i ] |--> Already run! Skipping . . .\n", theCar->id, aRide->id );
+                    //printf( " [ plan_rides ] [ car no. %i] [ ride no. %i ] |--> Already run! Skipping . . .\n", theCar->id, aRide->id );
                     node = node->next;
                     continue;
                 }
@@ -80,52 +90,56 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
                 //   - for the ride to be run (i. e. the ride length)
                 //   - the pause time, if >0 (the late must not be subtracted, but neither added!)
                 long totalTime                     = carDistanceFromStartRidePoint + rideLength + ( margin >= 0 ? margin : 0);
-                printf(" [ plan_rides ] [ car no. %i] [ ride no. %i ] ", theCar->id, aRide->id);
-                ride_toString(aRide);
-                car_toString(theCar);
-                printf( "distance car-start ride point: %i ; length: %i ; margin: %i. Total time: %i\n",
-                                carDistanceFromStartRidePoint,
-                                rideLength,
-                                margin,
-                                totalTime);
+                //printf(" [ plan_rides ] [ car no. %i] [ ride no. %i ] ", theCar->id, aRide->id);
+                //ride_toString(aRide);
+                //car_toString(theCar);
+                //printf( "distance car-start ride point: %i ; length: %i ; margin: %i. Total time: %i\n",
+                //                carDistanceFromStartRidePoint,
+                //                rideLength,
+                //                margin,
+                //                totalTime);
                 // So, let's check the conditions
                 if (
-                        margin >= 0                  && // Margin is non negative, i. e. the ride can start on time
-                        margin < bestMargin          && // Margin is a better (i. e. lower) value than the current best margin
-                        residualTime - totalTime > 0    // The ride will finish before the end of simulation
+                        //margin >= 0                 && // Margin is non negative, i. e. the ride can start on time
+                        abs( margin ) <= gameData->maxAbsMargin && // Margin is non negative, i. e. the ride can start on time
+                        abs( margin ) < bestAbsMargin           && // Margin is a better (i. e. lower) value than the current best margin
+                        residualTime - totalTime > 0               // The ride will finish before the end of simulation
                     ) {
-                    bestMargin = margin;
+                    bestAbsMargin = abs ( margin );
                     theRide = aRide;
                     bestRideTotalTime = totalTime;
+                    totalRidesOfCar++;
                 }
 
                 // then pass to the next ride
-                printf(" [ plan_rides ] [ car no. %i] [ ride no. %i ] |--> Checking next ride . . .\n", theCar->id, aRide->id);
+                //printf(" [ plan_rides ] [ car no. %i] [ ride no. %i ] |--> Checking next ride . . .\n", theCar->id, aRide->id);
                 node = node->next;
             }
             // Checked all the rides. If theRide == NULL we have no ride to
             // manage, and then we can pass to the next car (if present)
             if ( theRide == NULL ) {
-                printf(" [ plan_rides ] [ car no. %i] No ride fitting the conditions :( ! Passing to next car (if exists)!\n", theCar->id);
+                //printf(" [ plan_rides ] [ car no. %i] No ride fitting the conditions :( ! Passing to next car (if exists)!\n", theCar->id);
                 finishedSimulationForCar = TRUE;
                 continue;
             }
 
             // ... otherwise, we have a ride fitting all of our conditions!
             // Let's run it!
-            printf(" [ plan_rides ] [ car no. %i] A ride has been found!\n", theCar->id);
+            printf(" [ plan_rides ] [ car no. %i] A ride has been found (id: %i)!\n", theCar->id, theRide->id);
             // Updating the residual simulation time
             residualTime = residualTime - bestRideTotalTime;
             // Updating the car position
             car_setPosition(theCar, theRide->end);
             // Setting the ride as run
-            printf(" [ plan_rides ] [ car no. %i] Setting ride as run . . .\n", theCar->id);
+            //printf(" [ plan_rides ] [ car no. %i] [ ride no. %i] Setting ride as run . . .\n", theCar->id, theRide->id);
             theRide->hasRun = TRUE;
-            //printf("[ plan_rides ] [ car no. %i] ", theRide->id);
+            fprintf(of, "%i ", theRide->id);
         }
-        printf(" [ plan_rides ] [ car no. %i] Finished simulation for car. Passing to next on (if exists) . . . \n", theCar->id);
-        printf("\n");
+        //printf(" [ plan_rides ] [ car no. %i] Finished simulation for car. Destroying it . . . \n", theCar->id);
+        fprintf(of, " ( total rides managed: %i)\n", totalRidesOfCar);
+        car_destroy(theCar);
     }
+    fclose(of);
 }
 
 void plan_rides_with_clone(Node* ridesList, GameData* gameData, char* oFile) {

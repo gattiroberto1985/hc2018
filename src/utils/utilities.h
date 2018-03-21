@@ -13,4 +13,7 @@ typedef int bool;
 // Function to print and make new line
 void println(char* str);
 
+// Function to replace a part of a string inside another string
+char* string_replace(char const * const original, char const * const pattern, char const * const replacement);
+
 #endif

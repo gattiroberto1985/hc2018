@@ -8,6 +8,7 @@ typedef struct _GameData {
     int rideNum;
     int bonusForOnTimeLeave;
     int maxSimulationTime;
+    long maxAbsMargin;
 } GameData;
 
 void game_toString(GameData* gd);

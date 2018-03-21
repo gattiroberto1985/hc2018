@@ -41,7 +41,7 @@ void manage_input_file(const char* filePath, Node* rides, GameData* gameData) {
         if (len > 0 && line[len-1] == '\n')
             line[len-1] = '\0';*/
 		//printf(" [ manage_input_file ] %s\n",line);
-        printf( " [ manage_input_file ] [ line no. %i ] --> Read line: %s", count, line);
+        //printf( " [ manage_input_file ] [ line no. %i ] --> Read line: %s", count, line);
         //printf("line: %s\n", line);
         if ( count == 0 ) {
             printf( " [ manage_input_file ] [ line no. %i ] --> Reading gamedata . . . \n", count);
@@ -66,19 +66,19 @@ void manage_input_file(const char* filePath, Node* rides, GameData* gameData) {
                 node->next = malloc( sizeof( Node ) ) ;
                 node = node->next;
             }
-            printf( " [ manage_input_file ] [ line no. %i ] --> Reading ride . . . \n", count);
+            //printf( " [ manage_input_file ] [ line no. %i ] --> Reading ride . . . \n", count);
             //printf("Reading ride . . .\n");
             //int sx = 0, sy = 0, ex = 0, ey = 0, ts = 0, te = 0;
             // Defining a new ride with the data . . .
-            printf( " [ manage_input_file ] [ line no. %i ] ----> Allocating ride and positions . . . \n", count);
+            //printf( " [ manage_input_file ] [ line no. %i ] ----> Allocating ride and positions . . . \n", count);
             Ride*     ride  = ride_new();     //malloc( sizeof ( Ride    ) ) ;
             Position* start = position_new(); //malloc( sizeof( Position ) );
             Position* end   = position_new(); //malloc( sizeof( Position ) );
-            printf( " [ manage_input_file ] [ line no. %i ] ----> Setting ride start and end . . . \n", count);
+            //printf( " [ manage_input_file ] [ line no. %i ] ----> Setting ride start and end . . . \n", count);
             ride->id = count;
             ride->start = start;
             ride->end   = end;
-            printf( " [ manage_input_file ] [ line no. %i ] ----> Getting data . . . \n", count);
+            //printf( " [ manage_input_file ] [ line no. %i ] ----> Getting data . . . \n", count);
             sscanf(line, "%i %i %i %i %i %i", &(ride->start->x),
                                               &(ride->start->y),
                                               &(ride->end->x),
@@ -87,10 +87,10 @@ void manage_input_file(const char* filePath, Node* rides, GameData* gameData) {
                                               &(ride->finalTime));
             //printf(" --> Ride %i: [ %i, %i] to [ %i, %i] leave max on %i and arrive on %i\n", count, ride->start.x, ride->start.y, ride->end.x, ride->end.y, ride->startTime, ride->finalTime);
             // "node" is the previous element: defining the next element and setting the next->ride to the actual ride
-            printf( " [ manage_input_file ] [ line no. %i ] ----> Setting ride node: ", count);
+            //printf( " [ manage_input_file ] [ line no. %i ] ----> Setting ride node: ", count);
             node->ride = ride;
             node->next = NULL;
-            node_toString(node);
+            //node_toString(node);
         }
         count++;
     }

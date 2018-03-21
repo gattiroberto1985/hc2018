@@ -12,6 +12,7 @@ typedef struct _Car {
 } Car;
 
 Car* car_new();
+void car_destroy(Car* pc);
 void car_setId(Car* pc, int id);
 void car_setPosition(Car* pc, Position* p);
 void car_addRideRun(Car* pc, int rideId);

@@ -29,11 +29,12 @@ Position* position_new( ) {
 
 void position_destroy( Position* pp ) {
     if ( pp != NULL ) {
-        printf( " [ position_destroy ] Destroying position@%p . . .\n", pp );
+        //printf( " [ position_destroy ] Destroying position@%p . . .\n", pp );
         //printf( " [ position_destroy ] Position to be destroyed: ");
         //position_toString(pp);
         free ( pp );
         pp = NULL;
+        //printf(" [ position_destroy ] Destroyed!\n");
     }
 }
 
