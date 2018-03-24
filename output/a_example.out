@@ -1,5 +1,5 @@
 Car: 1	Rides: 1  ( total rides managed: 1)
 Car: 2	Rides: 3 2  ( total rides managed: 2)
 
-************************
-Total number of rides managed: 3
+***
+We have 3 rides managed. 3 finished on time and 1 started even in time (margin >= 0). The total length (with points!) is 8. Total should be: 10

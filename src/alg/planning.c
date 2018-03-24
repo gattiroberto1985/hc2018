@@ -158,8 +158,8 @@ void plan_rides(Node* ridesList, GameData* gameData, char* oFile) {
         totalRideClosedOnTime += totalRidesFinishingOnTimeForCar;
         totalLength           += carTotalLengthWithPoints;
     }
-    printf (           "We have %i rides managed. %i finished on time and %i started even in time (margin >= 0). The total length (with points!) is %i\n", totalRideManaged, totalRideClosedOnTime, totalRideOnTime, totalLength);
-    fprintf(of, "\n***\nWe have %i rides managed. %i finished on time and %i started even in time (margin >= 0). The total length (with points!) is %i\n", totalRideManaged, totalRideClosedOnTime, totalRideOnTime, totalLength);
+    printf (           "We have %i rides managed. %i finished on time and %i started even in time (margin >= 0). The total length (with points!) is %i. Total should be: %i\n", totalRideManaged, totalRideClosedOnTime, totalRideOnTime, totalLength, totalLength + ( totalRideOnTime * gameData->bonusForOnTimeLeave ) );
+    fprintf(of, "\n***\nWe have %i rides managed. %i finished on time and %i started even in time (margin >= 0). The total length (with points!) is %i. Total should be: %i\n", totalRideManaged, totalRideClosedOnTime, totalRideOnTime, totalLength, totalLength + ( totalRideOnTime * gameData->bonusForOnTimeLeave ) );
     fclose(of);
 }
 

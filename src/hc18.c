@@ -51,5 +51,8 @@ int main(int argc, char const *argv[]) {
     plan_rides(ridesList, gameData, oFile);
     //plan_ride_with_clone(ridesList, gameData, oFile);
 
+    // Freeing objects
+    node_destroyList( ridesList );
+
     return 0;
 }

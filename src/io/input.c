@@ -25,6 +25,7 @@ void manage_input_file(const char* filePath, Node* rides, GameData* gameData) {
         exit(EXIT_FAILURE);
     }
 
+    long totalDistanceOfRides = 0;
     printf(" [ manage_input_file ] About to start reading . . . \n");
     //while ((read = getline(&line, &len, fp)) != -1) {
     //while ((read = fgets(&line, &len, fp)) != -1) {
@@ -85,6 +86,13 @@ void manage_input_file(const char* filePath, Node* rides, GameData* gameData) {
                                               &(ride->end->y),
                                               &(ride->startTime),
                                               &(ride->finalTime));
+            long rideDistance = ride_calculateDistance(ride);
+            long maxTimeAllowedForRide = ride->finalTime - ride->startTime;
+            totalDistanceOfRides+=rideDistance;
+            if ( rideDistance > maxTimeAllowedForRide ) {
+                printf( " [ manage_input_file ] [ ride no. %i ] Ride will not be listed because distance (%i) exceed the max time allowed for the ride (%i)", count, rideDistance, maxTimeAllowedForRide );
+                continue;
+            }
             //printf(" --> Ride %i: [ %i, %i] to [ %i, %i] leave max on %i and arrive on %i\n", count, ride->start.x, ride->start.y, ride->end.x, ride->end.y, ride->startTime, ride->finalTime);
             // "node" is the previous element: defining the next element and setting the next->ride to the actual ride
             //printf( " [ manage_input_file ] [ line no. %i ] ----> Setting ride node: ", count);
@@ -94,7 +102,7 @@ void manage_input_file(const char* filePath, Node* rides, GameData* gameData) {
         }
         count++;
     }
-    //printf( " ------> last node: %p", node->next);
+    printf( " [ manage_input_file ] Total length of rides: %i", totalDistanceOfRides);
     fclose(fp);
     /*if (line)
       free(line);*/

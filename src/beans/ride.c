@@ -25,8 +25,8 @@ Ride* ride_new( ) {
 
 void ride_destroy( Ride* r) {
     if ( r != NULL ) {
-        printf( " [ ride_destroy ] Destroying ride . . .\n");
-        printf( " [ ride_destroy ] Destroying start position . . .\n");
+        //printf( " [ ride_destroy ] Destroying ride (@%p). . .\n", r);
+        //printf( " [ ride_destroy ] Destroying start position . . .\n");
         position_destroy(r->start);
         position_destroy(r->end);
         free ( r );

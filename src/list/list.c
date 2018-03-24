@@ -19,7 +19,7 @@ Node* node_new(Ride* pRide ) {
 
 void node_destroy(Node* n) {
 
-    while( n != NULL ) {
+    if( n != NULL ) {
         //printf(" [ node_destroy ] Request for node destroying @ %p\n", n);
         //printf( " [ node_destroy ] Destroying node->ride . . .\n");
         ride_destroy(n->ride);
